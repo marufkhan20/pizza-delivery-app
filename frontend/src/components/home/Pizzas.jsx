@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { pizzas } from "../../data/data";
 import FilterController from "./FilterController";
 import ProductItem from "./ProductItem";
@@ -8,6 +8,7 @@ const filterOptions = ["Vegeterian", "Non Vegeterian"];
 const Pizzas = () => {
   const [selectedOption, setSelectedOption] = useState("all");
   const [search, setSearch] = useState("");
+  const [animate, setAnimate] = useState(false);
 
   // pizzas data
   const pizzasData = pizzas
@@ -20,6 +21,14 @@ const Pizzas = () => {
     ?.filter((item) =>
       item?.name?.toLowerCase()?.includes(search?.toLocaleLowerCase())
     );
+
+  useEffect(() => {
+    setAnimate(true);
+
+    setTimeout(() => {
+      setAnimate(false);
+    }, 300);
+  }, [selectedOption, search]);
   return (
     <section className="py-16" id="pizzas">
       <div className="container">
@@ -34,7 +43,11 @@ const Pizzas = () => {
         />
 
         {/* pizzas */}
-        <div className="grid grid-cols-4 gap-6 mt-8">
+        <div
+          className={`${
+            animate ? "opacity-0" : "opacity-100"
+          } grid grid-cols-4 gap-6 transition-all duration-200 mt-8`}
+        >
           {pizzasData?.length > 0 &&
             pizzasData?.map((pizza) => (
               <ProductItem key={pizza?.id} data={pizza} />
