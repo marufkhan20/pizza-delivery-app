@@ -46,11 +46,11 @@ const Pizzas = () => {
         <div
           className={`${
             animate ? "opacity-0" : "opacity-100"
-          } grid grid-cols-4 gap-6 transition-all duration-200 mt-8`}
+          } grid grid-cols-4 gap-6 transition-all duration-300 mt-8`}
         >
           {pizzasData?.length > 0 &&
             pizzasData?.map((pizza) => (
-              <ProductItem key={pizza?.id} data={pizza} />
+              <ProductItem type="pizza" key={pizza?.id} data={pizza} />
             ))}
         </div>
 

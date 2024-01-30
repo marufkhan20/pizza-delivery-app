@@ -122,3 +122,27 @@ export const sauces = [
     type: "non-spicy",
   },
 ];
+
+export const toppings = [
+  {
+    id: 1,
+    productType: "pizza",
+    image: "toppings/cheese 1.png",
+    name: "Chedar",
+    price: 70,
+  },
+  {
+    id: 2,
+    productType: "pizza",
+    image: "toppings/chicken 2.png",
+    name: "Chicken",
+    price: 90,
+  },
+  {
+    id: 3,
+    productType: "softDrink",
+    image: "toppings/chicken 3.png",
+    name: "Soft Drink Chicken",
+    price: 100,
+  },
+];

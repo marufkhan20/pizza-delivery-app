@@ -15,7 +15,7 @@ const Sauces = () => {
         {/* pizzas */}
         <div className="grid grid-cols-4 gap-6 mt-8">
           {sauces?.map((item) => (
-            <ProductItem key={item?.id} data={item} />
+            <ProductItem type="sauces" key={item?.id} data={item} />
           ))}
         </div>
       </div>

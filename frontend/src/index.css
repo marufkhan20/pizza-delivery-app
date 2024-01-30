@@ -26,3 +26,7 @@ h6 {
 .button:hover .button-icon path {
   fill: #ff6900;
 }
+
+.bg-blur {
+  backdrop-filter: blur(1px);
+}

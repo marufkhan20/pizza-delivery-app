@@ -15,7 +15,7 @@ const SoftDrinks = () => {
         {/* SoftDrinks */}
         <div className="grid grid-cols-4 gap-6 mt-8">
           {softDrinks?.map((drink) => (
-            <ProductItem key={drink} data={drink} />
+            <ProductItem type="softDrink" key={drink} data={drink} />
           ))}
         </div>
       </div>
