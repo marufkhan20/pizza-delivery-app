@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { toppings } from "../../../../data/data";
 import Topping from "./Topping";
 
@@ -8,7 +9,7 @@ const ProductDetails = ({
   openProdeuctDetails,
   setOpenProductDetails,
 }) => {
-  const { image, name, description, metaInfo, price } = data || {};
+  const { id, image, name, description, metaInfo, price } = data || {};
 
   const [selectedToppings, setSelectedToppings] = useState([]);
   const [totalPrice, setTotalPrice] = useState(price);
@@ -43,6 +44,83 @@ const ProductDetails = ({
 
     setTotalPrice(updatedTotalPrice);
   }, [allToppings, price, selectedToppings]);
+
+  // add to cart
+  const addToCart = () => {
+    // get cart from local storage
+    let cart = localStorage.getItem("cart");
+    cart = JSON.parse(cart) || {};
+
+    // get all toppings
+    let toppings = [];
+
+    if (selectedToppings?.length > 0) {
+      toppings = allToppings?.filter((topping) =>
+        selectedToppings?.includes(topping?.id)
+      );
+    }
+
+    // add to cart
+    if (cart?.totalQuantity) {
+      let changeSize;
+
+      cart?.items?.forEach((item) => {
+        if (item?.id === id && item?.size !== selectedSize) {
+          changeSize = true;
+        } else {
+          changeSize = false;
+        }
+      });
+
+      if (changeSize) {
+        console.log("change size");
+        cart = {
+          items: [
+            ...cart.items,
+            { ...data, toppings, size: selectedSize, quantity: 1 },
+          ],
+          totalPrice: cart.totalPrice + Number(totalPrice),
+          totalQuantity: cart.totalQuantity + 1,
+        };
+      } else {
+        const updatedCartItems = cart?.items?.map((item) => {
+          if (item?.id === id && item?.size === selectedSize) {
+            return {
+              ...item,
+              quantity: item.quantity + 1,
+            };
+          } else {
+            return item;
+          }
+        });
+
+        cart = {
+          ...cart,
+          items: updatedCartItems,
+          totalPrice: cart.totalPrice + price,
+          totalQuantity: cart.totalQuantity + 1,
+        };
+      }
+    } else {
+      // prepare new cart object
+      cart = {
+        items: [
+          {
+            ...data,
+            toppings,
+            size: selectedSize,
+            quantity: 1,
+          },
+        ],
+        totalPrice: totalPrice,
+        totalQuantity: 1,
+      };
+    }
+
+    localStorage.setItem("cart", JSON.stringify(cart));
+
+    toast.success("Item added successfully");
+  };
   return (
     <div
       className={`transition-all duration-300 ${
@@ -96,7 +174,10 @@ const ProductDetails = ({
 
           <div className="mt-6 flex items-center justify-between gap-5">
             <h4 className="text-heading text-lg font-bold">₹{totalPrice}</h4>
-            <button className="w-[40px] text-xl h-[40px] flex items-center justify-center font-bold bg-grey rounded-full cursor-pointer transition-all hover:bg-primary hover:text-white">
+            <button
+              className="w-[40px] text-xl h-[40px] flex items-center justify-center font-bold bg-grey rounded-full cursor-pointer transition-all hover:bg-primary hover:text-white"
+              onClick={addToCart}
+            >
               +
             </button>
           </div>
